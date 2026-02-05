@@ -3,7 +3,7 @@ services:
   - type: web
     name: random-chat
     env: node
-    buildCommand: cd client && npm install && npm run build
+    buildCommand: cd server && npm install && cd ../client && npm install && npm run build
     startCommand: cd server && node index.js
     envVars:
       - key: NODE_ENV
