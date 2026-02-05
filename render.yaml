@@ -1,9 +1,8 @@
 services:
-  # Web Service for the app
   - type: web
     name: random-chat
-    runtime: node
-    buildCommand: npm install && (cd client && npm install && npm run build)
+    env: node
+    buildCommand: npm install && cd client && npm install && npm run build && cd ..
     startCommand: node server/index.js
     envVars:
       - key: NODE_ENV

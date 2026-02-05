@@ -11,10 +11,6 @@ export default defineConfig({
     host: true,
     port: 3000,
     strictPort: true,
-    https: {
-      key: './certs/key.pem',
-      cert: './certs/cert.pem'
-    },
     proxy: {
       '/socket.io': {
         target: 'http://127.0.0.1:4000',
@@ -26,9 +22,6 @@ export default defineConfig({
         changeOrigin: true,
         ws: true
       }
-    },
-    watch: {
-      usePolling: true
     }
   }
 })
