@@ -1,0 +1,12 @@
+services:
+  # Web Service for the app
+  - type: web
+    name: random-chat
+    env: node
+    buildCommand: cd client && npm install && npm run build
+    startCommand: cd server && node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000

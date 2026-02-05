@@ -122,21 +122,31 @@ port: 3000, // Change to your preferred port
 
 ## 🌐 Deployment
 
-### Railway
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=vite)
+### Render (Recommended - Free Tier)
 
-1. Click "Deploy on Railway" button above
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+1. Click **"Deploy to Render"** button above
+2. Connect your GitHub account
+3. Select your `random-chat` repository
+4. Render will auto-detect settings from `render.yaml`
+5. Click **"Deploy"**
+
+**Manual Setup:**
+1. Go to [render.com](https://render.com) and create a new **Web Service**
 2. Connect your GitHub repository
-3. Railway will auto-detect and configure both frontend and backend
+3. Configure:
+   - **Build Command**: `cd client && npm install && npm run build`
+   - **Start Command**: `cd server && node index.js`
+4. Add Environment Variables:
+   - `NODE_ENV` = `production`
+   - `PORT` = `4000`
+5. Deploy!
 
-### Render
-1. Create 2 web services on Render.com
-2. Connect your GitHub repo
-3. Set build commands and start commands
-
-### Vercel + Render
-- Frontend: Vercel (auto-deploys from GitHub)
-- Backend: Render (Node.js server)
+The free tier includes:
+- 750 hours/month of free service
+- Automatic SSL/HTTPS
+- Auto-deploys from GitHub
 
 ## 📝 Environment Variables (Optional)
 
