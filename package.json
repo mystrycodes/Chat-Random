@@ -4,7 +4,8 @@
   "description": "Real-time random chat with WebRTC video calls",
   "type": "module",
   "scripts": {
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "postinstall": "npm --prefix client install --include=dev && npm --prefix client run build"
   },
   "dependencies": {
     "express": "^4.18.2",
