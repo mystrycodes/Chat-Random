@@ -1,19 +1,38 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const httpServer = createServer(app);
+
+const PORT = process.env.PORT || 4000;
+const HOST = '0.0.0.0'; // Listen on all network interfaces
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
+// Serve React static files in production
+if (NODE_ENV === 'production') {
+  const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
+  app.use(express.static(clientDistPath));
+  console.log(`Serving static files from: ${clientDistPath}`);
+}
+
+// CORS configuration for development
+const corsOrigins = NODE_ENV === 'production'
+  ? '*' // In production with same-origin, allow all
+  : ['http://localhost:3000', 'https://localhost:3000', 'http://127.0.0.1:3000', 'https://127.0.0.1:3000', /^https?:\/\/[\d\.]+:3000$/];
+
 const io = new Server(httpServer, {
   cors: {
-    origin: ['http://localhost:3000', 'https://localhost:3000', 'http://127.0.0.1:3000', 'https://127.0.0.1:3000', /^https?:\/\/[\d\.]+:3000$/],
+    origin: corsOrigins,
     methods: ['GET', 'POST'],
     credentials: true
   }
 });
-
-const PORT = 4000;
-const HOST = '0.0.0.0'; // Listen on all network interfaces
 
 // Data structures
 const waitingQueue = [];
@@ -396,7 +415,18 @@ io.on('connection', (socket) => {
   });
 });
 
+// Serve React app for all non-API routes in production
+if (NODE_ENV === 'production') {
+  const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientDistPath, 'index.html'));
+  });
+}
+
 httpServer.listen(PORT, HOST, () => {
   console.log(`Random chat server running on http://localhost:${PORT}`);
-  console.log(`Access from mobile: http://<YOUR_IP>:${PORT}`);
+  console.log(`Environment: ${NODE_ENV}`);
+  if (NODE_ENV === 'development') {
+    console.log(`Access from mobile: http://<YOUR_IP>:${PORT}`);
+  }
 });
