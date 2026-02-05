@@ -2,9 +2,9 @@ services:
   # Web Service for the app
   - type: web
     name: random-chat
-    env: node
-    buildCommand: cd server && npm install && cd ../client && npm install && npm run build
-    startCommand: cd server && node index.js
+    runtime: node
+    buildCommand: npm install --prefix server && npm install --prefix client && npm run build --prefix client
+    startCommand: node server/index.js
     envVars:
       - key: NODE_ENV
         value: production
